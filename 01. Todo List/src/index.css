@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 22px;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  width: 100%; 
+  max-width: 500px;
+  border: 1px solid mediumblue;
+  margin: auto;
+}
+
+header {
+  width: 100%;
+  padding: 0 0.25em;
+  background-color: mediumblue;
+  color: aliceblue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-start;
+  align-items: center;
+  overflow-y: auto;
+}
+
+footer {
+  width: 100%;
+  padding: 0.25em;
+  background-color: mediumblue;
+  color: aliceblue;
+  display: grid;
+  place-content: center;
+}
+
+.item:nth-child(1){
+  margin-top: 0px;
+}
+
+.item{
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(238, 238, 238);
+  align-items: center;
+  margin: 5px 0;
+  width: 500px;
+}
+
+
+.item input[type="checkbox"]{
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+
+.item svg{
+  font-size: 30px;
+  margin: 20px;
+  outline: 0;
+  cursor: pointer;
+  color: steelblue;
+}
+
+.item svg:hover{
+  color: red;
+}
+
+/* Add Item */
+.addForm label{
+  position: absolute;
+  left: -99999px;
+}
+
+.addForm{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+}
+
+.addForm input{
+  flex: 1;
+  padding: 10px;
+  margin: 5px;
+  font-size: 17px;
+  outline: 0;
+  border-radius: 5px;
+}
+
+.addForm button{
+  width: 43px;
+  height: 43px;
+  margin-right: 5px;
+  font-size: 20px;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: mediumblue;
+  background: rgb(224, 224, 255);
+  border-radius: 5px;
+}
+
+.searchForm label{
+  position: absolute;
+  left: -99999px;
+}
+
+.searchForm{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.searchForm input{
+  flex: 1;
+  margin: 5px;
+  padding: 10px;
+  margin: 5px;
+  font-size: 17px;
+  outline: 0;
+  border-radius: 5px;
+}
+
+
