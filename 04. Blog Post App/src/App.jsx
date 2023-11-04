@@ -11,6 +11,8 @@ import { format } from "date-fns";
 import { useState, useEffect } from "react";
 import EditPost from "./EditPost";
 import api from "./api/posts";
+import useWindowSize from "./hooks/useWindowSize";
+import useAxiosFetch from "./hooks/useAxiosFetch";
 
 function App() {
     const [posts, setPosts] = useState([]);
@@ -21,27 +23,33 @@ function App() {
     const [editTitle, setEditTitle] = useState("");
     const [editBody, setEditBody] = useState("");
     const history = useHistory();
+    const { width } = useWindowSize();
+    const { data, fetchError, isLoading } = useAxiosFetch(
+        "http://localhost:3500/posts"
+    );
 
     useEffect(() => {
-        const fetchPosts = async() => {
-            try{
-                const response = await api.get('/posts');
-                setPosts(response.data);
-            } catch(err) {
-                //Not in the 200 response range
-                if(err.response){
-                    console.log(err.response.data);
-                    console.log(err.response.status);
-                    console.log(err.response.headers);
-                }
-                else{
-                    console.log(`Error: ${err.message}`);
-                }
-            }
+        setPosts(data);
+    }, [data]);
 
-        }
-        fetchPosts();
-    }, [])
+    // useEffect(() => {
+    //     const fetchPosts = async () => {
+    //         try {
+    //             const response = await api.get("/posts");
+    //             setPosts(response.data);
+    //         } catch (err) {
+    //             //Not in the 200 response range
+    //             if (err.response) {
+    //                 console.log(err.response.data);
+    //                 console.log(err.response.status);
+    //                 console.log(err.response.headers);
+    //             } else {
+    //                 console.log(`Error: ${err.message}`);
+    //             }
+    //         }
+    //     };
+    //     fetchPosts();
+    // }, []);
 
     useEffect(() => {
         const filteredResults = posts.filter(
@@ -64,50 +72,57 @@ function App() {
             body: postBody,
         };
 
-        try{
-            const response = await api.post('/posts', newPost);
+        try {
+            const response = await api.post("/posts", newPost);
             const allPosts = [...posts, response.data];
             setPosts(allPosts);
             setPostTitle("");
             setPostBody("");
             history.push("/");
-        } catch(err) {
+        } catch (err) {
             console.log(`Error: ${err.message}`);
         }
     };
-
 
     const handleEdit = async (id) => {
         const datetime = format(new Date(), "MMMM dd, yyyy pp");
-        const updatedPost = {id, title: editTitle, datetime, body: editBody};
-        try{
+        const updatedPost = { id, title: editTitle, datetime, body: editBody };
+        try {
             const response = await api.put(`/posts/${id}`, updatedPost);
-            setPosts(posts.map(post => post.id === id ? {...response.data} : post));
-            setEditTitle('');
-            setEditBody('');
-            history.push('/');
-        } catch(err) {
+            setPosts(
+                posts.map((post) =>
+                    post.id === id ? { ...response.data } : post
+                )
+            );
+            setEditTitle("");
+            setEditBody("");
+            history.push("/");
+        } catch (err) {
             console.log(`Error: ${err.message}`);
         }
-    }
+    };
 
     const handleDelete = async (id) => {
-            try{
-                await api.delete(`/posts/${id}`);
-                const postLists = posts.filter((post) => post.id !== id);
-                setPosts(postLists);
-                history.push("/");
-            } catch (err){
-                console.log(`Error: ${err.message}`);
-            }
+        try {
+            await api.delete(`/posts/${id}`);
+            const postLists = posts.filter((post) => post.id !== id);
+            setPosts(postLists);
+            history.push("/");
+        } catch (err) {
+            console.log(`Error: ${err.message}`);
+        }
     };
     return (
         <div className="App">
-            <Header title="ReactJS Blog" />
+            <Header title="ReactJS Blog" width={width} />
             <Nav search={search} setSearch={setSearch} />
             <Switch>
                 <Route exact path="/">
-                    <Home posts={searchResults} />
+                    <Home 
+                        posts={searchResults} 
+                        fetchError={fetchError}
+                        isLoading={isLoading}
+                    />
                 </Route>
                 <Route exact path="/post">
                     <NewPost
