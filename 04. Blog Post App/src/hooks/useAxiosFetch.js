@@ -25,25 +25,23 @@ const useAxiosFetch = (dataUrl) => {
                 if (isMounted) {
                     setFetchError(err.message);
                     setData([]);
-                } 
-            } finally {
-                    isMounted && setIsLoading(false);
                 }
-
+            } finally {
+                isMounted && setIsLoading(false);
             }
+        };
 
-            fetchData(dataUrl);
+        fetchData(dataUrl);
 
-            const cleanUp = () => {
-                isMounted = false;
-                source.cancel()
-            }
+        const cleanUp = () => {
+            isMounted = false;
+            source.cancel();
+        };
 
-         return cleanUp;
-        
+        return cleanUp;
     }, [dataUrl]);
 
-    return { data, fetchError, isLoading}
+    return { data, fetchError, isLoading };
 };
 
 export default useAxiosFetch;
